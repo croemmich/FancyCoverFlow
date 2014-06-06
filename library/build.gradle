@@ -1,0 +1,96 @@
+apply plugin: 'android-library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        versionCode 1
+        versionName "0.1.1"
+        minSdkVersion 7
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+    }
+}
+
+//javadoc {
+//    classpath += configurations.provided
+//    title = " FancyCoverClow ${version}"
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from 'build/docs/javadoc'
+//}
+//
+//task sourcesJar(type: Jar) {
+//    from sourceSets.main.allSource
+//    classifier = 'sources'
+//}
+//
+//configurations {
+//    archives {
+//        extendsFrom configurations.default
+//    }
+//}
+
+artifacts {
+    archives file('build/libs/library.aar')
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://dev.myriadmobile.com/nexus/content/repositories/thirdparty/') {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            pom.groupId = 'at.technikum.mti'
+            pom.artifactId = 'fancycoverflow'
+            pom.version = android.defaultConfig.versionName
+            pom.project {
+                name 'FancyCoverFlow'
+                packaging 'aar'
+                description 'A cool Open Source cover flow view to make your Android app look more fancy.'
+                url 'http://davidschreiber.github.io/FancyCoverFlow/'
+
+                scm {
+                    url 'https://github.com/davidschreiber/FancyCoverFlow'
+                    connection 'scm:git@github.com:davidschreiber/FancyCoverFlow.git'
+                    developerConnection 'scm:git@github.com:davidschreiber/FancyCoverFlow.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'davidschreiber'
+                        name 'davidschreiber'
+                    }
+                }
+
+                issueManagement {
+                    system 'GitHub Issues'
+                    url 'https://github.com/davidschreiber/FancyCoverFlow/issues'
+                }
+            }
+        }
+    }
+}
